@@ -1,0 +1,1 @@
+export { default as Tellonym } from "./src/Tellonym";
