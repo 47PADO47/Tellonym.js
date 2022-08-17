@@ -1,4 +1,4 @@
-# Tellonym.jsbbbbb
+# Tellonym.js
 🕵️‍♂️ Tellonym private api wrapper made in typescript
 
 ## Token
