@@ -1,31 +1,23 @@
 import { fetch, HeadersInit, RequestInit, Response } from 'undici'
 import { parse, join } from 'path';
-//import { readFileSync, writeFileSync } from 'fs';
 import { Answer, avatar, chatResponse, ChatUser, checkUpdatesResponse, ClassOptions, ClassUser, feedElement, FetchOptions, FetchResponse, Headers, Profile, searchHistoryUser, Message, sentTell, suggestedContact, suggestedPerson, tell, tellAd, Follower, Emoji, answerMedia, searchResultsUser, chanllengeEmoji, blocklistElement } from './types';
 
 class Tellonym {
-    /*public readonly username: string;
-    readonly #password: string;*/
-
     #token: string;
     public authorized: boolean = false;
 
     public user?: ClassUser;
     public debug: boolean = false;
 
-    #directory: string;
     #baseUrl: (host: string) => string;
     #headers: Headers;
     constructor({ token, debug = false }: ClassOptions = {}) {
-        /*this.username = username || "";
-        this.#password = password || "";*/
         this.#token = token || "";
         this.authorized = false;
 
         this.user = undefined;
         this.debug = debug;
 
-        this.#directory = join(parse(__dirname).dir, '..');
         this.#baseUrl = (host: string = 'api') => `https://${host}.tellonym.me/`;
         this.#headers = {
             "Content-Type": "application/json",
@@ -34,48 +26,6 @@ class Tellonym {
             "tellonym-client": "web:3.28.7"
         };
     }
-    
-    /*
-    async login(username = this.username, password = this.#password): Promise<string> {
-        if (this.authorized) return this.#error("Already logged in ❌");
-
-        if (!username || !password) return this.#error("Username or password not set ❌");
-
-        if (!await this.#checkTemp()) {
-            const userData = {
-                "deviceType": "web",
-                "deviceName": this.#headers["User-Agent"],
-                "lang": "en",
-                "email": username,
-                "password": password,
-                "limit": 16
-            };
-    
-            const response: Response = await fetch(`${this.#baseUrl}/auth/login/`, {
-                method: "POST",
-                headers: this.#headers,
-                body: JSON.stringify(userData),
-            });
-    
-            const json: any = await response.json();
-    
-            if (json?.err) {
-                this.#error(`An error happened: ${json.err?.message} (${json.err?.code}) ❌`);
-                return "";
-            }
-
-            if (response.status !== 200) return this.#error(`The server returned a status code other than 200 (${response.status}) ❌`);
-            
-            this.#updateData(json);
-            await writeFileSync(`${this.#directory}/tellonym.json`, JSON.stringify(json, null, 2));
-        }
-
-        if (!this.authorized) return this.#error("Failed to login ❌");
-
-        this.#log(`Successfully logged in as "${this.userId}" ✅`);
-
-        return this.userId;
-    }*/
 
     async login(token: string = this.#token) {
         if (this.authorized) return this.#error("Already logged in ❌");
@@ -679,11 +629,10 @@ class Tellonym {
      * @private Fetch data from the server and the specified endpoint, then returns it
      * @param {string} path api path
      * @param {string} [method] http method
-     * @param {string} [type] students | parents
      * @param {string} [body] body to send
-     * @param {boolean} [json] if the data should be parsed to json
-     * @param {string} [id] user identifier
      * @param {object} [customHeaders] additional headers to send
+     * @param {object} [customHost] custom host to concat to base url
+     * @param {boolean} [json] if the data should be parsed to json
      * @returns {Promise<any>} the response
      */
     async #fetch<TResponse>({
