@@ -1,7 +1,7 @@
 {
   "name": "tellonym.js",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "🕵️‍♂️ Tellonym private api wrapper made in typescript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
@@ -12,7 +12,9 @@
     "type": "git",
     "url": "git://github.com/47PADO47/Tellonym.js.git"
   },
-  "keywords": [],
+  "keywords": [
+    "tellonym"
+  ],
   "author": "PADO",
   "license": "ISC",
   "dependencies": {
@@ -22,5 +24,8 @@
     "@types/node": "^18.7.3",
     "tslib": "^2.3.1",
     "typescript": "^4.6.2"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
