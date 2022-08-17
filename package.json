@@ -7,6 +7,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage": "https://github.com/47PADO47/Tellonym.js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/47PADO47/Tellonym.js.git"
+  },
   "keywords": [],
   "author": "PADO",
   "license": "ISC",
