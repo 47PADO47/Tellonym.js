@@ -1,5 +1,4 @@
 import { fetch, HeadersInit, RequestInit, Response } from 'undici'
-import { parse, join } from 'path';
 import { Answer, avatar, chatResponse, ChatUser, checkUpdatesResponse, ClassOptions, ClassUser, feedElement, FetchOptions, FetchResponse, Headers, Profile, searchHistoryUser, Message, sentTell, suggestedContact, suggestedPerson, tell, tellAd, Follower, Emoji, answerMedia, searchResultsUser, chanllengeEmoji, blocklistElement } from './types';
 
 class Tellonym {
@@ -610,16 +609,25 @@ class Tellonym {
         });
     }
 
-    async deleteReport(msgId: number, msgType: 'tell' | 'answer') {
+    async searchUsers(search: string) {
+        const data: void | {results?: searchResultsUser[]} = await this.#fetch({
+            path: `search/users?searchString=${search}&term=${search}`,
+        });
+        if (!data || !data.results) return this.#error("Failed to search users ❌");
+        return data.results;
+    }
+
+    async changeAvatarPosition(currentPos: number, targetPos: number) {
         await this.#fetch({
-            path: `reports/destroy`,
+            path: 'uploads/avatar/exchange',
             method: 'POST',
             body: JSON.stringify({
-                [msgType === 'tell' ? 'tellId' : 'answerId']: msgId,
+                currentPos,
+                targetPos,
             }),
             json: false,
         });
-    }
+    };
 
     boolToInt(bool: boolean) {
         return bool ? 1 : 0;
@@ -671,14 +679,6 @@ class Tellonym {
         if (res.status !== 200) return this.#error(`The server returned a status different from 200 (${res.status}) ❌`);
 
         return res.data;
-    }
-
-    async searchUsers(search: string) {
-        const data: void | {results?: searchResultsUser[]} = await this.#fetch({
-            path: `search/users?searchString=${search}&term=${search}`,
-        });
-        if (!data || !data.results) return this.#error("Failed to search users ❌");
-        return data.results;
     }
 
     #error(msg: string) {
